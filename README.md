@@ -1,9 +1,9 @@
-${moduleName}
+openmrs-module-clientregistry
 ==========================
 
 Description
 -----------
-This is a very basic module which can be used as a starting point in creating a new module.
+A module that enables OpenMRS to communicate with a FHIR-based Client Registry for patient search and registration.
 
 Building from Source
 --------------------
