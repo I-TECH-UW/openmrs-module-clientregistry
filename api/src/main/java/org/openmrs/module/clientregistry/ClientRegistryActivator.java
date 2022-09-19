@@ -11,27 +11,55 @@ package org.openmrs.module.clientregistry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.BaseModuleActivator;
+import org.openmrs.module.ModuleActivator;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-public class ClientRegistryActivator extends BaseModuleActivator {
-	
+public class ClientRegistryActivator implements ModuleActivator {
+	// Log
 	private Log log = LogFactory.getLog(this.getClass());
-	
+
 	/**
-	 * @see #started()
+	 * @see ModuleActivator#willRefreshContext()
+	 */
+	public void willRefreshContext() {
+		log.info("Refreshing MPI Interface Module");
+	}
+
+	/**
+	 * @see ModuleActivator#contextRefreshed()
+	 */
+	public void contextRefreshed() {
+		log.info("MPI Interface Module refreshed");
+	}
+
+	/**
+	 * @see ModuleActivator#willStart()
+	 */
+	public void willStart() {
+		log.info("Starting MPI Interface Module");
+	}
+
+	/**
+	 * @see ModuleActivator#started()
 	 */
 	public void started() {
-		log.info("Started Client Registry");
+
+		log.info("MPI Interface Module started");
 	}
-	
+
 	/**
-	 * @see #shutdown()
+	 * @see ModuleActivator#willStop()
 	 */
-	public void shutdown() {
-		log.info("Shutdown Client Registry");
+	public void willStop() {
+		log.info("Stopping MPI Interface Module");
 	}
-	
+
+	/**
+	 * @see ModuleActivator#stopped()
+	 */
+	public void stopped() {
+		log.info("MPI Interface Module stopped");
+	}
 }

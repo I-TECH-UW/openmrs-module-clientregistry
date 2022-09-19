@@ -9,40 +9,34 @@
  */
 package org.openmrs.module.clientregistry.api;
 
+import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.clientregistry.ClientRegistryConfig;
 import org.openmrs.module.clientregistry.Item;
+import org.openmrs.module.clientregistry.exception.ClientRegistryException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
+@Transactional(rollbackFor = .class)
 public interface ClientRegistryService extends OpenmrsService {
-	
+
 	/**
-	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
-	 * only transaction.
-	 * 
-	 * @param uuid
-	 * @return
-	 * @throws APIException
-	 */
-	@Authorized()
-	@Transactional(readOnly = true)
-	Item getItemByUuid(String uuid) throws APIException;
-	
-	/**
-	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
-	 * this module's privilege. It is executed in a transaction.
-	 * 
-	 * @param item
-	 * @return
-	 * @throws APIException
+	 * Export patient demographic record to the CR
+	 * @param patientExport
 	 */
 	@Authorized(ClientRegistryConfig.MODULE_PRIVILEGE)
 	@Transactional
-	Item saveItem(Item item) throws APIException;
+	public void exportPatient(Patient patientExport) throws ClientRegistryException;
+
+	/**
+	 * Export patient demographic record to the CR
+	 * @param patientExport
+	 */
+	public void updatePatient(Patient patientExport) throws ClientRegistryException;
+
 }
