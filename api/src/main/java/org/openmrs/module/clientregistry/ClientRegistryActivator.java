@@ -3,7 +3,6 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
  * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
@@ -25,45 +24,45 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ClientRegistryActivator extends BaseModuleActivator implements DaemonTokenAware {
-	
+
+	private static DaemonToken daemonToken;
+
 	// Log
 	private Log log = LogFactory.getLog(this.getClass());
-	
-	private static DaemonToken daemonToken;
-	
+
 	@Autowired
 	private ClientRegistryManager clientRegistryManager;
-	
+
 	@Autowired
 	private ClientRegistryConfig config;
-	
+
 	/**
 	 * @see ModuleActivator#willStart()
 	 */
 	public void willStart() {
 		log.info("Starting Client Registry Module");
 	}
-	
+
 	/**
 	 * @see ModuleActivator#started()
 	 */
 	public void started() {
 		clientRegistryManager.setDaemonToken(daemonToken);
-		
+
 		if (config.isClientRegistryEnabled()) {
 			clientRegistryManager.enableClientRegistry();
 		}
-		
+
 		log.info("Client Registry Module started");
 	}
-	
+
 	/**
 	 * @see ModuleActivator#willStop()
 	 */
 	public void willStop() {
 		log.info("Stopping Client Registry Module");
 	}
-	
+
 	/**
 	 * @see ModuleActivator#stopped()
 	 */
@@ -73,7 +72,7 @@ public class ClientRegistryActivator extends BaseModuleActivator implements Daem
 		}
 		log.info("Client Registry Module stopped");
 	}
-	
+
 	@Override
 	public void setDaemonToken(DaemonToken token) {
 		this.daemonToken = token;

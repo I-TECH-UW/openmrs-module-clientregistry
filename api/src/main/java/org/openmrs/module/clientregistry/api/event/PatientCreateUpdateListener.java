@@ -4,7 +4,6 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
-import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import org.apache.commons.lang3.StringUtils;
@@ -12,29 +11,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
-import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Daemon;
 import org.openmrs.event.EventListener;
 import org.openmrs.module.DaemonToken;
-import org.openmrs.module.clientregistry.exception.ClientRegistryException;
 import org.openmrs.module.fhir2.api.FhirPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PatientCreateUpdateListener implements EventListener {
-	
-	public DaemonToken getDaemonToken() {
-		return daemonToken;
-	}
-	
+
 	private Log log = LogFactory.getLog(this.getClass());
-	
-	public void setDaemonToken(DaemonToken daemonToken) {
-		this.daemonToken = daemonToken;
-	}
-	
+
 	private DaemonToken daemonToken;
 
 	@Autowired
@@ -42,6 +30,14 @@ public class PatientCreateUpdateListener implements EventListener {
 
 	@Autowired
 	private IGenericClient client;
+
+	public DaemonToken getDaemonToken() {
+		return daemonToken;
+	}
+
+	public void setDaemonToken(DaemonToken daemonToken) {
+		this.daemonToken = daemonToken;
+	}
 
 	@Override
 	public void onMessage(Message message) {
@@ -56,7 +52,7 @@ public class PatientCreateUpdateListener implements EventListener {
 			}
 		}, daemonToken);
 	}
-	
+
 	private void processMessage(Message message) {
 		if (message instanceof MapMessage) {
 			MapMessage mapMessage = (MapMessage) message;
@@ -82,10 +78,10 @@ public class PatientCreateUpdateListener implements EventListener {
 			MethodOutcome result = client.create().resource(patient).execute();
 
 			if (!result.getCreated()) {
-				log.error(String.format("Error creating or updating patient in Client Registry: %s",
-					result.getResource().getClass().getName()));
+				log.error(String.format("Error creating or updating patient in Client Registry: %s", result.getResource()
+						.getClass().getName()));
 			}
 		}
 	}
-	
+
 }
