@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hl7.fhir.r4.model.HumanName;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Patient;
 import org.openmrs.api.context.Daemon;
 import org.openmrs.event.EventListener;
@@ -79,10 +80,15 @@ public class PatientCreateUpdateListener implements EventListener {
 			patient = patientService.get(uuid);
 			patient.getNameFirstRep().setUse(HumanName.NameUse.OFFICIAL);
 			
-			patient.addIdentifier().setSystem(ClientRegistryConstants.CLIENT_REGISTRY_INTERNAL_ID_SYSTEM)
-			        .setValue(config.getClientRegistryIdentifierRoot() + "/" + uuid);
+			Identifier openmrsUniqueId = new Identifier()
+			        .setSystem(ClientRegistryConstants.CLIENT_REGISTRY_INTERNAL_ID_SYSTEM)
+			        .setValue(config.getClientRegistryIdentifierRoot() + "/" + uuid)
+			        .setUse(Identifier.IdentifierUse.OFFICIAL);
+			patient.addIdentifier(openmrsUniqueId);
 			
-			if (mapMessage.getJMSDestination().toString() == ClientRegistryConstants.UPDATE_MESSAGE_DESTINATION) {
+			patient.setId(openmrsUniqueId.getValue());
+			
+			if (mapMessage.getJMSDestination().toString().equals(ClientRegistryConstants.UPDATE_MESSAGE_DESTINATION)) {
 				client.update().resource(patient).execute();
 			} else {
 				client.create().resource(patient).execute();
