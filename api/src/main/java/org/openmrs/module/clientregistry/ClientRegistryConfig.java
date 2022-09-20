@@ -9,13 +9,29 @@
  */
 package org.openmrs.module.clientregistry;
 
+import org.apache.commons.lang.StringUtils;
+import org.openmrs.api.AdministrationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
  * Contains module's config.
  */
-@Component("clientregistry.ClientRegistryConfig")
+@Component
 public class ClientRegistryConfig {
 	
+	@Autowired
+	@Qualifier("adminService")
+	AdministrationService administrationService;
+	
 	public final static String MODULE_PRIVILEGE = "Client Registry Privilege";
+	
+	public boolean isClientRegistryEnabled() {
+		return StringUtils.isNotBlank(getClientRegistryServerUrl());
+	}
+	
+	public String getClientRegistryServerUrl() {
+		return administrationService.getGlobalProperty(ClientRegistryConstants.GP_CLIENT_REGISTRY_SERVER_URL);
+	}
 }

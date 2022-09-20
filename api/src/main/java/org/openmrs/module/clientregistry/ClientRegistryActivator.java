@@ -11,55 +11,71 @@ package org.openmrs.module.clientregistry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.module.BaseModuleActivator;
+import org.openmrs.module.DaemonToken;
+import org.openmrs.module.DaemonTokenAware;
 import org.openmrs.module.ModuleActivator;
+import org.openmrs.module.clientregistry.api.ClientRegistryManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-public class ClientRegistryActivator implements ModuleActivator {
+
+@Component
+public class ClientRegistryActivator extends BaseModuleActivator implements DaemonTokenAware {
+	
 	// Log
 	private Log log = LogFactory.getLog(this.getClass());
-
-	/**
-	 * @see ModuleActivator#willRefreshContext()
-	 */
-	public void willRefreshContext() {
-		log.info("Refreshing MPI Interface Module");
-	}
-
-	/**
-	 * @see ModuleActivator#contextRefreshed()
-	 */
-	public void contextRefreshed() {
-		log.info("MPI Interface Module refreshed");
-	}
-
+	
+	private static DaemonToken daemonToken;
+	
+	@Autowired
+	private ClientRegistryManager clientRegistryManager;
+	
+	@Autowired
+	private ClientRegistryConfig config;
+	
 	/**
 	 * @see ModuleActivator#willStart()
 	 */
 	public void willStart() {
-		log.info("Starting MPI Interface Module");
+		log.info("Starting Client Registry Module");
 	}
-
+	
 	/**
 	 * @see ModuleActivator#started()
 	 */
 	public void started() {
-
-		log.info("MPI Interface Module started");
+		clientRegistryManager.setDaemonToken(daemonToken);
+		
+		if (config.isClientRegistryEnabled()) {
+			clientRegistryManager.enableClientRegistry();
+		}
+		
+		log.info("Client Registry Module started");
 	}
-
+	
 	/**
 	 * @see ModuleActivator#willStop()
 	 */
 	public void willStop() {
-		log.info("Stopping MPI Interface Module");
+		log.info("Stopping Client Registry Module");
 	}
-
+	
 	/**
 	 * @see ModuleActivator#stopped()
 	 */
 	public void stopped() {
-		log.info("MPI Interface Module stopped");
+		if (clientRegistryManager != null) {
+			clientRegistryManager.disableClientRegistry();
+		}
+		log.info("Client Registry Module stopped");
+	}
+	
+	@Override
+	public void setDaemonToken(DaemonToken token) {
+		this.daemonToken = token;
 	}
 }
