@@ -14,6 +14,7 @@ import org.openmrs.api.context.Daemon;
 import org.openmrs.event.EventListener;
 import org.openmrs.module.DaemonToken;
 import org.openmrs.module.clientregistry.ClientRegistryConfig;
+import org.openmrs.module.clientregistry.ClientRegistryConstants;
 import org.openmrs.module.fhir2.api.FhirPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -78,10 +79,10 @@ public class PatientCreateUpdateListener implements EventListener {
 			patient = patientService.get(uuid);
 			patient.getNameFirstRep().setUse(HumanName.NameUse.OFFICIAL);
 			
-			patient.addIdentifier().setSystem("http://clientregistry.org/openmrs")
+			patient.addIdentifier().setSystem(ClientRegistryConstants.CLIENT_REGISTRY_INTERNAL_ID_SYSTEM)
 			        .setValue(config.getClientRegistryIdentifierRoot() + "/" + uuid);
 			
-			if (mapMessage.getJMSDestination().toString() == "topic://UPDATED:org.openmrs.Patient") {
+			if (mapMessage.getJMSDestination().toString() == ClientRegistryConstants.UPDATE_MESSAGE_DESTINATION) {
 				client.update().resource(patient).execute();
 			} else {
 				client.create().resource(patient).execute();
