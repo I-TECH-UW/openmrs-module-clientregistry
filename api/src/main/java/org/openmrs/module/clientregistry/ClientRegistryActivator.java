@@ -15,7 +15,10 @@ import org.openmrs.module.DaemonToken;
 import org.openmrs.module.DaemonTokenAware;
 import org.openmrs.module.ModuleActivator;
 import org.openmrs.module.clientregistry.api.ClientRegistryManager;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,46 +26,58 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class ClientRegistryActivator extends BaseModuleActivator implements DaemonTokenAware {
-
+public class ClientRegistryActivator extends BaseModuleActivator implements ApplicationContextAware, DaemonTokenAware {
+	
+	private static ApplicationContext applicationContext;
+	
 	private static DaemonToken daemonToken;
-
+	
 	// Log
 	private Log log = LogFactory.getLog(this.getClass());
-
+	
 	@Autowired
 	private ClientRegistryManager clientRegistryManager;
-
+	
 	@Autowired
 	private ClientRegistryConfig config;
-
+	
 	/**
 	 * @see ModuleActivator#willStart()
 	 */
 	public void willStart() {
 		log.info("Starting Client Registry Module");
 	}
-
+	
 	/**
 	 * @see ModuleActivator#started()
 	 */
 	public void started() {
-		clientRegistryManager.setDaemonToken(daemonToken);
-
-		if (config.isClientRegistryEnabled()) {
-			clientRegistryManager.enableClientRegistry();
+		try {
+			applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
+			
+			if (daemonToken != null) {
+				clientRegistryManager.setDaemonToken(daemonToken);
+			}
+			
+			if (config.isClientRegistryEnabled()) {
+				clientRegistryManager.enableClientRegistry();
+			}
+			
+			log.info("Client Registry Module started");
 		}
-
-		log.info("Client Registry Module started");
+		catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		
 	}
-
+	
 	/**
 	 * @see ModuleActivator#willStop()
 	 */
 	public void willStop() {
 		log.info("Stopping Client Registry Module");
 	}
-
+	
 	/**
 	 * @see ModuleActivator#stopped()
 	 */
@@ -72,9 +87,15 @@ public class ClientRegistryActivator extends BaseModuleActivator implements Daem
 		}
 		log.info("Client Registry Module stopped");
 	}
-
+	
 	@Override
 	public void setDaemonToken(DaemonToken token) {
 		this.daemonToken = token;
 	}
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+	
 }

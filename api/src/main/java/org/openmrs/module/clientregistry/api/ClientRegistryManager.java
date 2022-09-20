@@ -17,57 +17,59 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ClientRegistryManager implements GlobalPropertyListener {
-
+	
 	private final AtomicBoolean isRunning = new AtomicBoolean(false);
-
+	
 	private Log log = LogFactory.getLog(this.getClass());
-
+	
 	private DaemonToken daemonToken;
-
+	
 	@Autowired
 	private PatientCreateUpdateListener patientListener;
-
+	
 	public void setDaemonToken(DaemonToken daemonToken) {
 		this.daemonToken = daemonToken;
 	}
-
+	
 	@Override
 	public boolean supportsPropertyName(String propertyName) {
 		return ClientRegistryConstants.GP_CLIENT_REGISTRY_SERVER_URL.equals(propertyName);
 	}
-
+	
 	@Override
 	public void globalPropertyChanged(GlobalProperty newValue) {
 		log.trace("Notified of change to property" + ClientRegistryConstants.GP_CLIENT_REGISTRY_SERVER_URL);
-
+		
 		if (StringUtils.isNotBlank((String) newValue.getValue())) {
 			enableClientRegistry();
 		} else {
 			disableClientRegistry();
 		}
 	}
-
+	
 	@Override
 	public void globalPropertyDeleted(String propertyName) {
 		disableClientRegistry();
 	}
-
+	
 	public void enableClientRegistry() {
 		log.info("Enabling Client Registry!");
-
-		patientListener.setDaemonToken(daemonToken);
-
+		
+		if (daemonToken != null) {
+			patientListener.setDaemonToken(daemonToken);
+		}
+		
 		if (!isRunning.get()) {
 			Event.subscribe(Patient.class, Event.Action.CREATED.toString(), patientListener);
 			Event.subscribe(Patient.class, Event.Action.UPDATED.toString(), patientListener);
 		}
-
+		
 		isRunning.set(true);
 	}
-
+	
 	public void disableClientRegistry() {
 		log.info("Disabling Client Registry!");
-
+		
 		if (isRunning.get()) {
 			Event.unsubscribe(Patient.class, Event.Action.CREATED, patientListener);
 			Event.unsubscribe(Patient.class, Event.Action.UPDATED, patientListener);

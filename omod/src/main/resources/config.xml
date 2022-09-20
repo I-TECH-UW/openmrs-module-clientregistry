@@ -21,8 +21,6 @@
 
   <!-- Extensions -->
   <extension>
-    <point>org.openmrs.admin.list</point>
-    <class>org.openmrs.module.clientregistry.extension.html.AdminList</class>
   </extension>
 
   <aware_of_modules>
@@ -38,9 +36,33 @@
   <!-- Required Global Properties -->
   <globalProperty>
     <property>@MODULE_ID@.serverUrl</property>
-    <defaultValue>http://localhost:3000</defaultValue>
+    <defaultValue>http://localhost:5001/CR/fhir/Patient</defaultValue>
     <description>
       Base URL for the Client Registry Server
+    </description>
+  </globalProperty>
+
+  <globalProperty>
+    <property>@MODULE_ID@.username</property>
+    <defaultValue>openmrs</defaultValue>
+    <description>
+      Username for BasicAuth for Client Registry
+    </description>
+  </globalProperty>
+
+  <globalProperty>
+    <property>@MODULE_ID@.password</property>
+    <defaultValue>openmrs</defaultValue>
+    <description>
+      Password for BasicAuth for Client Registry
+    </description>
+  </globalProperty>
+
+  <globalProperty>
+    <property>@MODULE_ID@.identifierRoot</property>
+    <defaultValue>http://clientregistry.org/openmrs</defaultValue>
+    <description>
+      Root for OpenMRS instance's identifier namespace
     </description>
   </globalProperty>
 

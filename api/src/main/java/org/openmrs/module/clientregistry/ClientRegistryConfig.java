@@ -19,18 +19,30 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ClientRegistryConfig {
-
+	
 	public final static String MODULE_PRIVILEGE = "Client Registry Privilege";
-
+	
 	@Autowired
 	@Qualifier("adminService")
 	AdministrationService administrationService;
-
+	
 	public boolean isClientRegistryEnabled() {
 		return StringUtils.isNotBlank(getClientRegistryServerUrl());
 	}
-
+	
 	public String getClientRegistryServerUrl() {
 		return administrationService.getGlobalProperty(ClientRegistryConstants.GP_CLIENT_REGISTRY_SERVER_URL);
+	}
+	
+	public String getClientRegistryUserName() {
+		return administrationService.getGlobalProperty(ClientRegistryConstants.GP_CLIENT_REGISTRY_USER_NAME);
+	}
+	
+	public String getClientRegistryPassword() {
+		return administrationService.getGlobalProperty(ClientRegistryConstants.GP_CLIENT_REGISTRY_PASSWORD);
+	}
+	
+	public String getClientRegistryIdentifierRoot() {
+		return administrationService.getGlobalProperty(ClientRegistryConstants.GP_CLIENT_REGISTRY_IDENTIFIER_ROOT);
 	}
 }
