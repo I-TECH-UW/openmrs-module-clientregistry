@@ -26,7 +26,7 @@ public class ClientRegistryConfig {
 	@Qualifier("adminService")
 	AdministrationService administrationService;
 	
-	public boolean isClientRegistryEnabled() {
+	public boolean clientRegistryConnectionEnabled() {
 		return StringUtils.isNotBlank(getClientRegistryServerUrl());
 	}
 	

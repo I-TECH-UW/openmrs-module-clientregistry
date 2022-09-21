@@ -59,7 +59,7 @@ public class ClientRegistryActivator extends BaseModuleActivator implements Appl
 				clientRegistryManager.setDaemonToken(daemonToken);
 			}
 			
-			if (config.isClientRegistryEnabled()) {
+			if (config.clientRegistryConnectionEnabled()) {
 				clientRegistryManager.enableClientRegistry();
 			}
 			

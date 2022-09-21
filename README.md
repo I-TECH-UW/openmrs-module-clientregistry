@@ -7,7 +7,7 @@ A module that enables OpenMRS to communicate with a FHIR-based Client Registry f
 
 Building from Source
 --------------------
-You will need to have Java 1.6+ and Maven 2.x+ installed. Use the command 'mvn package' to
+You will need to have Java 1.8+ and Maven 2.x+ installed. Use the command 'mvn package' to
 compile and package the module. The .omod file will be in the omod/target folder.
 
 Alternatively you can add the snippet provided in the [Creating Modules](https://wiki.openmrs.org/x/cAEr) page to your

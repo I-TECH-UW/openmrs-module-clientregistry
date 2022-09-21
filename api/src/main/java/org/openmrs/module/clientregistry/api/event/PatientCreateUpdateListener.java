@@ -46,16 +46,21 @@ public class PatientCreateUpdateListener implements EventListener {
 	
 	@Override
 	public void onMessage(Message message) {
-		log.trace("Received message: " + message);
+		log.trace(String.format("Received message: \n%s", message));
 
-		Daemon.runInDaemonThread(() -> {
-			try {
-				processMessage(message);
-			}
-			catch (Exception e) {
-				log.error("Failed to process Patient message!" + message.toString(), e);
-			}
-		}, daemonToken);
+		try {
+			Daemon.runInDaemonThread(() -> {
+				try {
+					processMessage(message);
+				}
+				catch (Exception e) {
+					log.error(String.format("Failed to process Patient message!\n%s", message.toString()), e);
+				}
+			}, daemonToken);
+		} catch (Exception e) {
+			log.error(String.format("Failed to start Daemon thread to process message!\n%s", message.toString()), e);
+		}
+
 	}
 	
 	private void processMessage(Message message) throws JMSException {
@@ -65,10 +70,10 @@ public class PatientCreateUpdateListener implements EventListener {
 			String uuid;
 			try {
 				uuid = mapMessage.getString("uuid");
-				log.debug("Handling patient " + uuid);
+				log.debug(String.format("Handling patient %s", uuid));
 			}
 			catch (JMSException e) {
-				log.error("Exception caught while trying to get patient uuid for event", e);
+				log.error("Exception caught while trying to get patient uuid for event.", e);
 				return;
 			}
 			
@@ -82,7 +87,7 @@ public class PatientCreateUpdateListener implements EventListener {
 			
 			Identifier openmrsUniqueId = new Identifier()
 			        .setSystem(ClientRegistryConstants.CLIENT_REGISTRY_INTERNAL_ID_SYSTEM)
-			        .setValue(config.getClientRegistryIdentifierRoot() + "/" + uuid)
+			        .setValue(String.format("%s/%s", config.getClientRegistryIdentifierRoot(), uuid))
 			        .setUse(Identifier.IdentifierUse.OFFICIAL);
 			patient.addIdentifier(openmrsUniqueId);
 			

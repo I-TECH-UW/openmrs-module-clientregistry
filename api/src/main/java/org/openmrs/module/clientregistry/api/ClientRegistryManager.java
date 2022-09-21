@@ -38,11 +38,16 @@ public class ClientRegistryManager implements GlobalPropertyListener {
 	
 	@Override
 	public void globalPropertyChanged(GlobalProperty newValue) {
-		log.trace("Notified of change to property" + ClientRegistryConstants.GP_CLIENT_REGISTRY_SERVER_URL);
-		
-		if (StringUtils.isNotBlank((String) newValue.getValue())) {
-			enableClientRegistry();
-		} else {
+		try {
+			log.trace(String.format("Notified of change to property: %s", newValue.getProperty()));
+			if (StringUtils.isNotBlank((String) newValue.getValue())) {
+				enableClientRegistry();
+			} else {
+				disableClientRegistry();
+			}
+		}
+		catch (Exception e) {
+			log.error("Failed to read property value, disabling client registry!");
 			disableClientRegistry();
 		}
 	}
@@ -74,6 +79,7 @@ public class ClientRegistryManager implements GlobalPropertyListener {
 			Event.unsubscribe(Patient.class, Event.Action.CREATED, patientListener);
 			Event.unsubscribe(Patient.class, Event.Action.UPDATED, patientListener);
 		}
+		
 		isRunning.set(false);
 	}
 }
