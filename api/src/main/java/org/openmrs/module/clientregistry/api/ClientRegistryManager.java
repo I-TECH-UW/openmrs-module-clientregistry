@@ -30,10 +30,10 @@ public class ClientRegistryManager implements GlobalPropertyListener {
 	
 	@Autowired
 	private PatientCreateUpdateListener patientListener;
-
+	
 	@Autowired
 	private FhirPatientServiceImpl fhirPatientService;
-
+	
 	@Autowired
 	private ClientRegistryConfig clientRegistryConfig;
 	
@@ -92,26 +92,30 @@ public class ClientRegistryManager implements GlobalPropertyListener {
 		
 		isRunning.set(false);
 	}
-
+	
 	/**
-	 * Determine the appropriate PatientService class based off of the client registry transaction type configuration
-	 * @return PatientService class corresponding to the appropriate transaction type supported by the client registry
+	 * Determine the appropriate PatientService class based off of the client registry transaction
+	 * type configuration
+	 * 
+	 * @return PatientService class corresponding to the appropriate transaction type supported by
+	 *         the client registry
 	 * @throws IllegalArgumentException if defined transaction type is unsupported
 	 */
 	public ClientRegistryPatientService getPatientService() throws IllegalArgumentException {
 		try {
 			String transactionMethodGlobalProperty = clientRegistryConfig.getClientRegistryTransactionMethod().toUpperCase();
-
+			
 			switch (ClientRegistryTransactionType.valueOf(transactionMethodGlobalProperty)) {
 				case FHIR:
 					return fhirPatientService;
 				case HL7:
 					throw new IllegalArgumentException("HL7 transaction type is currently unsupported");
 			}
-		} catch (Exception ignored) {
-
 		}
-
+		catch (Exception ignored) {
+			
+		}
+		
 		throw new IllegalArgumentException("Unsupported transaction type");
 	}
 }

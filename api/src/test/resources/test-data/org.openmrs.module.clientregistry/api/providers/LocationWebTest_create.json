@@ -1,0 +1,19 @@
+{
+  "resourceType": "Location",
+  "meta": {
+    "versionId": "1",
+    "tag": [
+      {
+        "code": "mCSD_Location",
+        "display": "mCSD_Location"
+      }
+    ]
+  },
+  "name": "Test location",
+  "address": {
+    "city": "kampala",
+    "country": "uganda",
+    "postalCode": "9105 PZ",
+    "state": "MI"
+  }
+}

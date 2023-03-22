@@ -1,5 +1,5 @@
 package org.openmrs.module.clientregistry;
 
 public enum ClientRegistryTransactionType {
-    FHIR, HL7
+	FHIR, HL7
 }

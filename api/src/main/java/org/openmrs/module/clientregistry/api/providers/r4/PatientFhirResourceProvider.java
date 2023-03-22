@@ -33,43 +33,47 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Nonnull;
 import java.util.HashSet;
 
-@Component("patientFhirR4ResourceProvider")
+@Component("clientregistry.PatientFhirResourceProvider")
 @R4Provider
 @Setter(AccessLevel.PACKAGE)
 public class PatientFhirResourceProvider implements IResourceProvider {
-
-    @Autowired
-    private ClientRegistryManager clientRegistryManager;
-
-    @Override
-    public Class<? extends IBaseResource> getResourceType() {
-        return Patient.class;
-    }
-
-    @Read
-    public Patient getClientRegistryPatientById(@IdParam @Nonnull IdType id) {
-        return clientRegistryManager.getPatientService().getPatient(id.getIdPart());
-    }
-
-    @Search
-    public IBundleProvider searchClientRegistryPatients(@OptionalParam(name = Patient.SP_NAME) StringAndListParam name,
-                                                        @OptionalParam(name = Patient.SP_GIVEN) StringAndListParam given,
-                                                        @OptionalParam(name = Patient.SP_FAMILY) StringAndListParam family,
-                                                        @OptionalParam(name = Patient.SP_IDENTIFIER) TokenAndListParam identifier,
-                                                        @OptionalParam(name = Patient.SP_GENDER) TokenAndListParam gender,
-                                                        @OptionalParam(name = Patient.SP_BIRTHDATE) DateRangeParam birthDate,
-                                                        @OptionalParam(name = Patient.SP_DEATH_DATE) DateRangeParam deathDate,
-                                                        @OptionalParam(name = Patient.SP_DECEASED) TokenAndListParam deceased,
-                                                        @OptionalParam(name = Patient.SP_ADDRESS_CITY) StringAndListParam city,
-                                                        @OptionalParam(name = Patient.SP_ADDRESS_STATE) StringAndListParam state,
-                                                        @OptionalParam(name = Patient.SP_ADDRESS_POSTALCODE) StringAndListParam postalCode,
-                                                        @OptionalParam(name = Patient.SP_ADDRESS_COUNTRY) StringAndListParam country,
-                                                        @OptionalParam(name = Patient.SP_RES_ID) TokenAndListParam id,
-                                                        @OptionalParam(name = "_lastUpdated") DateRangeParam lastUpdated, @Sort SortSpec sort,
-                                                        @IncludeParam(reverse = true, allow = {"Observation:" + Observation.SP_PATIENT,
-                                                                "AllergyIntolerance:" + AllergyIntolerance.SP_PATIENT, "DiagnosticReport:" + DiagnosticReport.SP_PATIENT,
-                                                                "Encounter:" + Encounter.SP_PATIENT, "MedicationRequest:" + MedicationRequest.SP_PATIENT,
-                                                                "ServiceRequest:" + ServiceRequest.SP_PATIENT}) HashSet<Include> revIncludes) {
-        return clientRegistryManager.getPatientService().searchForPatients(new PatientSearchParams(name, given, family, identifier, gender, birthDate, deathDate, deceased, city, state, postalCode, country, id, lastUpdated, sort, revIncludes));
-    }
+	
+	@Autowired
+	private ClientRegistryManager clientRegistryManager;
+	
+	@Override
+	public Class<? extends IBaseResource> getResourceType() {
+		return Patient.class;
+	}
+	
+	@Read
+	public Patient getClientRegistryPatientById(@IdParam @Nonnull IdType id) {
+		return clientRegistryManager.getPatientService().getPatient(id.getIdPart());
+	}
+	
+	@Search
+	public IBundleProvider searchClientRegistryPatients(
+	        @OptionalParam(name = Patient.SP_NAME) StringAndListParam name,
+	        @OptionalParam(name = Patient.SP_GIVEN) StringAndListParam given,
+	        @OptionalParam(name = Patient.SP_FAMILY) StringAndListParam family,
+	        @OptionalParam(name = Patient.SP_IDENTIFIER) TokenAndListParam identifier,
+	        @OptionalParam(name = Patient.SP_GENDER) TokenAndListParam gender,
+	        @OptionalParam(name = Patient.SP_BIRTHDATE) DateRangeParam birthDate,
+	        @OptionalParam(name = Patient.SP_DEATH_DATE) DateRangeParam deathDate,
+	        @OptionalParam(name = Patient.SP_DECEASED) TokenAndListParam deceased,
+	        @OptionalParam(name = Patient.SP_ADDRESS_CITY) StringAndListParam city,
+	        @OptionalParam(name = Patient.SP_ADDRESS_STATE) StringAndListParam state,
+	        @OptionalParam(name = Patient.SP_ADDRESS_POSTALCODE) StringAndListParam postalCode,
+	        @OptionalParam(name = Patient.SP_ADDRESS_COUNTRY) StringAndListParam country,
+	        @OptionalParam(name = Patient.SP_RES_ID) TokenAndListParam id,
+	        @OptionalParam(name = "_lastUpdated") DateRangeParam lastUpdated,
+	        @Sort SortSpec sort,
+	        @IncludeParam(reverse = true, allow = { "Observation:" + Observation.SP_PATIENT,
+	                "AllergyIntolerance:" + AllergyIntolerance.SP_PATIENT,
+	                "DiagnosticReport:" + DiagnosticReport.SP_PATIENT, "Encounter:" + Encounter.SP_PATIENT,
+	                "MedicationRequest:" + MedicationRequest.SP_PATIENT, "ServiceRequest:" + ServiceRequest.SP_PATIENT }) HashSet<Include> revIncludes) {
+		return clientRegistryManager.getPatientService().searchForPatients(
+		    new PatientSearchParams(name, given, family, identifier, gender, birthDate, deathDate, deceased, city, state,
+		            postalCode, country, id, lastUpdated, sort, revIncludes));
+	}
 }
