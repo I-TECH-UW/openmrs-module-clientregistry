@@ -2,14 +2,12 @@ package org.openmrs.module.clientregistry.api.impl;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.gclient.IOperationUntypedWithInputAndPartialOutput;
-import ca.uhn.fhir.rest.gclient.IQuery;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
-import ca.uhn.fhir.rest.param.StringOrListParam;
 import ca.uhn.fhir.rest.param.StringParam;
 import ca.uhn.fhir.rest.param.TokenParam;
-import ca.uhn.fhir.rest.param.UriOrListParam;
-import org.hl7.fhir.instance.model.api.IBaseBundle;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Parameters;
+import org.hl7.fhir.r4.model.Patient;
 import org.openmrs.module.clientregistry.ClientRegistryConfig;
 import org.openmrs.module.clientregistry.api.CRPatientService;
 import org.openmrs.module.clientregistry.providers.FhirCRConstants;
