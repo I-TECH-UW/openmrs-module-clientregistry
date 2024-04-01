@@ -28,9 +28,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientRegistryActivator extends BaseModuleActivator implements ApplicationContextAware, DaemonTokenAware {
 	
-	private static ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 	
-	private static DaemonToken daemonToken;
+	private DaemonToken daemonToken;
 	
 	// Log
 	private Log log = LogFactory.getLog(this.getClass());
