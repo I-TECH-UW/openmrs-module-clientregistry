@@ -11,16 +11,11 @@ public interface CRPatientService {
 	
 	List<Patient> searchCRForPatients(PatientSearchParams patientSearchParams);
 	
-	// Query a patient through a PIXm manager using native IDs
-	// Question: Should this return a patient bundle?
 	Patient getPatientByPIX(String sourceIdentifier, String sourceIdentifierSystem, List<String> extraTargetSystems);
 	
-	// Method for patient search, including fuzzy search
 	List<Patient> searchPatients(PatientSearchParams patientSearchParams);
 	
-	// Creates or updates a patient record
 	Patient createOrUpdatePatient(Patient patient);
 	
-	// Purges patient record from the registry
 	Patient purgePatient(Patient patient);
 }
