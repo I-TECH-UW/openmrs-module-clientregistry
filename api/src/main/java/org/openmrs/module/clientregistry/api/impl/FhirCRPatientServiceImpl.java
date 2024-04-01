@@ -72,27 +72,41 @@ public class FhirCRPatientServiceImpl implements CRPatientService {
 	public List<Patient> searchCRForPatients(PatientSearchParams patientSearchParams) {
 		return null;
 	}
-
+	
+	/**
+	 * @param sourceIdentifier
+	 * @param sourceIdentifierSystem
+	 * @param extraTargetSystems
+	 * @return
+	 */
 	@Override
 	public Patient getPatientByPIX(String sourceIdentifier, String sourceIdentifierSystem, List<String> extraTargetSystems) {
 		return null;
 	}
-
+	
+	/**
+	 * @param patientSearchParams
+	 * @return
+	 */
 	@Override
 	public List<Patient> searchPatients(PatientSearchParams patientSearchParams) {
 		return null;
 	}
-
+	
+	/**
+	 * @param patient
+	 * @return
+	 */
 	@Override
 	public Patient createOrUpdatePatient(Patient patient) {
 		return null;
 	}
-
+	
 	@Override
 	public Patient purgePatient(Patient patient) {
 		return null;
 	}
-
+	
 	/**
 	 * Filter and parse out fhir patients from Client Registry Patient Search results
 	 */
