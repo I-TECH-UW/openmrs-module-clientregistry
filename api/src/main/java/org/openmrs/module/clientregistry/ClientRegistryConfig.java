@@ -21,29 +21,29 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ClientRegistryConfig {
-
+	
 	public final static String MODULE_PRIVILEGE = "Client Registry Privilege";
-
+	
 	@Autowired
 	@Qualifier("adminService")
 	AdministrationService administrationService;
-
+	
 	@Value("${clientregistry.serverUrl}")
 	private String serverUrl;
-
+	
 	@Value("${clientregistry.username}")
 	private String username;
-
+	
 	@Value("${clientregistry.password}")
 	private String password;
-
+	
 	@Value("${clientregistry.identifierRoot}")
 	private String identifierRoot;
-
+	
 	public boolean clientRegistryConnectionEnabled() {
 		return StringUtils.isNotBlank(getClientRegistryServerUrl());
 	}
-
+	
 	public String getClientRegistryServerUrl() {
 		return serverUrl;
 	}
@@ -65,11 +65,11 @@ public class ClientRegistryConfig {
 	public String getClientRegistryUserName() {
 		return username;
 	}
-
+	
 	public String getClientRegistryPassword() {
 		return password;
 	}
-
+	
 	public String getClientRegistryIdentifierRoot() {
 		return identifierRoot;
 	}

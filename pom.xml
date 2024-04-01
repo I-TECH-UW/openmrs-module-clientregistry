@@ -195,24 +195,20 @@
   </dependencyManagement>
 	<profiles>
     <profile>
-      <!-- Github Packages Integration -->
       <id>github-packages</id>
       <distributionManagement>
-        <!-- Deploy to Github Packages -->
-        <repository>
-          <id>github-packages</id>
-          <name>Github Maven Repo</name>
-          <url>https://maven.pkg.github.com/i-tech-uw/openmrs-module-clientregistry</url>
-          <uniqueVersion>false</uniqueVersion>
-        </repository>
-        <snapshotRepository>
-          <id>github-packages</id>
-          <name>Github Maven Repo</name>
-          <url>https://maven.pkg.github.com/i-tech-uw/openmrs-module-clientregistry</url>
-          <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
+       <repository>
+          <id>openmrs-repo-modules</id>
+          <name>Modules</name>
+           <url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules/</url>
+      </repository>
+      <snapshotRepository>
+          <id>openmrs-repo-snapshots</id>
+          <name>OpenMRS Snapshots</name>
+          <url>http://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
+      </snapshotRepository>
+  </distributionManagement>
+  </profile>
   </profiles>
 
   <properties>
