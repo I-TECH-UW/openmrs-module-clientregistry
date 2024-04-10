@@ -10,7 +10,6 @@ package org.openmrs.module.clientregistry;
 
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.AdministrationService;
-import org.openmrs.module.clientregistry.providers.FhirCRConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,16 +27,16 @@ public class ClientRegistryConfig {
 	@Qualifier("adminService")
 	AdministrationService administrationService;
 
-	@Value("${clientregistry.serverUrl}")
+	@Value("${CLIENTREGISTRY_SERVERURL}")
 	private String serverUrl;
 
-	@Value("${clientregistry.username}")
+	@Value("${CLIENTREGISTRY_USERNAME}")
 	private String username;
 
-	@Value("${clientregistry.password}")
+	@Value("${CLIENTREGISTRY_PASSWORD}")
 	private String password;
 
-	@Value("${clientregistry.identifierRoot}")
+	@Value("${CLIENTREGISTRY_IDENTIFIERROOT}")
 	private String identifierRoot;
 
 	public boolean clientRegistryConnectionEnabled() {

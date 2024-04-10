@@ -88,7 +88,10 @@ public class PatientCreateUpdateListener implements EventListener {
 			Patient patient;
 			patient = patientService.get(uuid);
 			patient.getNameFirstRep().setUse(HumanName.NameUse.OFFICIAL);
-			
+			for (ContactPoint contactPoint : patient.getTelecom()) {
+				contactPoint.setSystem(ContactPoint.ContactPointSystem.PHONE);
+				contactPoint.setUse(ContactPoint.ContactPointUse.MOBILE);
+			}
 			Identifier openmrsUniqueId = new Identifier()
 			        .setSystem(ClientRegistryConstants.CLIENT_REGISTRY_INTERNAL_ID_SYSTEM)
 			        .setValue(String.format("%s/%s", config.getClientRegistryIdentifierRoot(), uuid))
