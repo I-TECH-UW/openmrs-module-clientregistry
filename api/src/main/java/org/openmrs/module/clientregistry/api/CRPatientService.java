@@ -10,4 +10,12 @@ public interface CRPatientService {
 	List<Patient> getCRPatients(String sourceIdentifier, String sourceIdentifierSystem, List<String> extraTargetSystems);
 	
 	List<Patient> searchCRForPatients(PatientSearchParams patientSearchParams);
+	
+	Patient getPatientByPIX(String sourceIdentifier, String sourceIdentifierSystem, List<String> extraTargetSystems);
+	
+	List<Patient> searchPatients(PatientSearchParams patientSearchParams);
+	
+	Patient createOrUpdatePatient(Patient patient);
+	
+	Patient purgePatient(Patient patient);
 }
