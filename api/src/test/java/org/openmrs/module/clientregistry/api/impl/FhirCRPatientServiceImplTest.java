@@ -10,8 +10,22 @@
 
 package org.openmrs.module.clientregistry.api.impl;
 
+import org.hl7.fhir.r4.model.HumanName;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.openmrs.Patient;
+import org.openmrs.PersonAddress;
+import org.openmrs.PersonName;
+import org.openmrs.module.fhir2.api.FhirGlobalPropertyService;
+import org.openmrs.module.fhir2.api.dao.FhirPatientDao;
+import org.openmrs.module.fhir2.api.dao.FhirPatientIdentifierSystemDao;
+import org.openmrs.module.fhir2.api.impl.FhirPatientServiceImpl;
+import org.openmrs.module.fhir2.api.search.SearchQuery;
+import org.openmrs.module.fhir2.api.search.SearchQueryInclude;
+import org.openmrs.module.fhir2.api.translators.PatientTranslator;
 
 import java.util.List;
 
@@ -20,6 +34,7 @@ import java.util.List;
  * 
  * @see org.openmrs.module.clientregistry.api.impl.FhirCRPatientServiceImpl
  */
+@RunWith(MockitoJUnitRunner.class)
 public class FhirCRPatientServiceImplTest {
 	
 	private static final Integer PATIENT_ID = 198;
@@ -64,8 +79,67 @@ public class FhirCRPatientServiceImplTest {
 	
 	//	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 	
+	@Mock
+	private PatientTranslator patientTranslator;
+	
+	@Mock
+	private FhirPatientDao dao;
+	
+	@Mock
+	private FhirPatientIdentifierSystemDao systemDao;
+	
+	@Mock
+	private FhirGlobalPropertyService globalPropertyService;
+	
+	@Mock
+	private SearchQueryInclude<org.hl7.fhir.r4.model.Patient> searchQueryInclude;
+	
+	@Mock
+	private SearchQuery<Patient, org.hl7.fhir.r4.model.Patient, FhirPatientDao, PatientTranslator, SearchQueryInclude<org.hl7.fhir.r4.model.Patient>> searchQuery;
+	
+	private FhirPatientServiceImpl patientService;
+	
+	private org.hl7.fhir.r4.model.Patient fhirPatient;
+	
+	private Patient patient;
+	
 	@Before
-	public void before() {
+	public void setUp() {
+		patientService = new FhirPatientServiceImpl() {
+			
+			@Override
+			protected void validateObject(org.openmrs.Patient object) {
+			}
+		};
+		
+		patientService.setDao(dao);
+		patientService.setSystemDao(systemDao);
+		patientService.setTranslator(patientTranslator);
+		patientService.setSearchQuery(searchQuery);
+		patientService.setSearchQueryInclude(searchQueryInclude);
+		
+		PersonName name = new PersonName();
+		name.setFamilyName(PATIENT_FAMILY_NAME);
+		name.setGivenName(PATIENT_GIVEN_NAME);
+		
+		patient = new Patient();
+		patient.setUuid(PATIENT_UUID);
+		patient.setGender("M");
+		patient.addName(name);
+		
+		PersonAddress address = new PersonAddress();
+		address.setCityVillage(CITY);
+		address.setStateProvince(STATE);
+		address.setPostalCode(POSTAL_CODE);
+		address.setCountry(COUNTRY);
+		
+		HumanName humanName = new HumanName();
+		humanName.addGiven(PATIENT_GIVEN_NAME);
+		humanName.setFamily(PATIENT_FAMILY_NAME);
+		
+		fhirPatient = new org.hl7.fhir.r4.model.Patient();
+		fhirPatient.setId(PATIENT_UUID);
+		fhirPatient.addName(humanName);
 	}
 	
 	/**
