@@ -38,14 +38,22 @@ public class ClientRegistryConfig {
 	
 	@Value("${CLIENTREGISTRY_IDENTIFIERROOT:}")
 	private String identifierRoot;
+
+	@Value("${CLIENTREGISTRY_EVENTSENABLED:}")
+	private Boolean eventsEnabled;
 	
 	public boolean clientRegistryConnectionEnabled() {
 		return StringUtils.isNotBlank(getClientRegistryServerUrl());
+	}
+
+	public Boolean isClientRegistryEventsEnabled() {
+    	return Boolean.TRUE.equals(eventsEnabled) && clientRegistryConnectionEnabled();
 	}
 	
 	public String getClientRegistryServerUrl() {
 		return serverUrl;
 	}
+	
 	
 	public String getClientRegistryGetPatientEndpoint() {
 		String globalPropPatientEndpoint = administrationService
