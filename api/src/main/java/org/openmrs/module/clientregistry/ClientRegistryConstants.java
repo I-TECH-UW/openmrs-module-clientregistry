@@ -17,6 +17,8 @@ public class ClientRegistryConstants {
 	public static final String GP_CLIENT_REGISTRY_PASSWORD = "CLIENTREGISTRY_PASSWORD";
 	
 	public static final String GP_CLIENT_REGISTRY_IDENTIFIER_ROOT = "CLIENTREGISTRY_IDENTIFIERROOT";
+
+	public static final String GP_CLIENT_REGISTRY_EVENTS_ENABLE = "CLIENTREGISTRY_EVENTSENABLE";
 	
 	public static final String GP_CLIENT_REGISTRY_TRANSACTION_METHOD = "clientregistry.transactionMethod";
 	
